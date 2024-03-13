@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clima API</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text"name="city" placeholder="Ingrese una ciudad">
+        <button type="submit">Buscar pronostico</button>
+
+    </form>
+    <div>
+        {% if weather_data %}
+        <div>
+            {% include 'data.html' with weather_data=weather_data  %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
