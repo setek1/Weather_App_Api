@@ -13,9 +13,13 @@ def index(request):
     
     #Se obtiene el valor de la ciudad en el caso contrario se redirigira a una pagina de error.
     if request.method =="POST":
-        city= request.POST['city']
-        #Enviamos la informacion 
-        weather_data =fetch_weather_forecast(city, API_KEY,current_weather_url)
+        try:
+
+            city= request.POST['city']
+            #Enviamos la informacion 
+            weather_data =fetch_weather_forecast(city, API_KEY,current_weather_url)
+        except Exception as e:
+            weather_data={'error' :'Ciudad no encontrada'}
     else:
         return render(request, 'index.html')
     
@@ -35,10 +39,10 @@ def fetch_weather_forecast(city, api_key, current_weather_url):
     
     #Guardamos solo la informacion que necesitamos para poder visualizarla en formato de diccionario
     weather_data={
-        'city':city,
-        'hora':datetime.datetime.fromtimestamp(response['dt']).strftime('%H:%M'),
-        'temperature':round(response['main']['temp']- 273.15,2),
-        'description':response['weather'][0]['description'],
+        'city':city.capitalize(),
+        'hora':datetime.datetime.fromtimestamp(response['dt']).strftime('%H:%M %p'),
+        'temperature':round(response['main']['temp']- 273.15),
+        'description':response['weather'][0]['description'].capitalize(),
         'icon':response['weather'][0]['icon'],
         'country':response['sys']['country']
     }
